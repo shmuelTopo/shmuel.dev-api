@@ -81,7 +81,7 @@ export default class RecipeController {
 
   public async getRecipes(searchTerm: string): Promise<RecipeSearch[]> {
     const client = await pool.connect();
-    const query = `SELECT id, title, ready_in_minutes, likes, dish_types FROM search_term_recipes
+    const query = `SELECT id, title, ready_in_minutes, image, likes, dish_types FROM search_term_recipes
                   LEFT JOIN recipes ON recipes.id = search_term_recipes.recipe_id
                   WHERE search_term_recipes.search_term = '${searchTerm}';`;
     const results = await client.query(query);

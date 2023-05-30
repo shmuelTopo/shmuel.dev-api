@@ -34,7 +34,7 @@ router.post("/", async (req, res, next) => {
 });
 
 router.use("*", (req, res) => {
-  res.status(404).json(req.originalUrl);
+  res.status(404).json("404 page not found");
 });
 
 export default router;

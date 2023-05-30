@@ -16,24 +16,24 @@ router.get("/", async (_req, res) => {
 });
 
 router.get("/search", async (req, res, next) => {
-  const query = String(req.query.query);
-  if (!["pizza", "bread", "olives", "olive-bread", "banana-bread"].includes(query)) {
-    return next(
-      new ApiError(
-        errorType.NOT_FOUND,
-        "query not found, you can search for pizza bread or olives"
-      )
-    );
-  }
+  const query = String(req.query.query).toLowerCase();
+  // if (!["pizza", "bread", "olives", "olive-bread", "banana-bread"].includes(query)) {
+  //   return next(
+  //     new ApiError(
+  //       errorType.NOT_FOUND,
+  //       "query not found, you can search for pizza bread or olives"
+  //     )
+  //   );
+  // }
   try {
     let searchResults = await recipeController.getRecipes(query);
     if (!searchResults.length) {
-      // const recipes = await axios.get(
-      //   `https://api.spoonacular.com/recipes/complexSearch?query=${query}&number=100&addRecipeInformation=true&addRecipeNutrition=true&apiKey=${process.env.API_KEY}`
-      // );
       const recipes = await axios.get(
-        `https://shmuel.dev/files/${query}-sample-search.json`
+        `https://api.spoonacular.com/recipes/complexSearch?query=${query}&number=100&addRecipeInformation=true&addRecipeNutrition=true&apiKey=${process.env.API_KEY}`
       );
+      // const recipes = await axios.get(
+      //   `https://shmuel.dev/files/${query}-sample-search.json`
+      // );
       await recipeController.addRecipes(
         searchResultsTransformer(recipes.data.results),
         query
@@ -70,7 +70,7 @@ router.get("/recipe/:id", async (req, res, next) => {
 });
 
 router.use("*", (_req, res) => {
-  res.status(404).json("not found");
+  res.status(404).json("404 not found");
 });
 
 export default router;

@@ -4,6 +4,7 @@ export interface RecipeSearch {
   id: string;
   title: string;
   readyInMinutes: number;
+  dishTypes: string[];
   likes: number;
   image: string;
 }
@@ -12,8 +13,6 @@ export const createRecipeTable = async () => {
 
   try {
     await client.query(`
-      DROP TABLE IF EXISTS search_term_recipes;
-      DROP TABLE IF EXISTS recipes;
       CREATE TABLE IF NOT EXISTS recipes (
         id INTEGER PRIMARY KEY,
         title VARCHAR,
@@ -45,7 +44,6 @@ export const createSearchTermTable = async () => {
 
   try {
     await client.query(`
-      DROP TABLE IF EXISTS search_term_recipes;
       CREATE TABLE IF NOT EXISTS search_term_recipes (
         recipe_id INTEGER REFERENCES recipes(id),
         search_term VARCHAR(255)

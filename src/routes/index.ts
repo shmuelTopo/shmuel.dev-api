@@ -20,10 +20,10 @@ router.use("*", (_req, _res, next) => {
 
 const errorHandler: ErrorRequestHandler = (error: any, _req, res, _next) => {
   if (error instanceof ApiError) {
-    res.status(error.statusCode).json(error.message);
+    res.status(error.statusCode).json(error);
   } else {
     console.error(error);
-    res.status(500).json("something went wrong!!");
+    res.status(500).json(error);
   }
 };
 
